@@ -7,7 +7,7 @@ from torch.utils.data import DataLoader
 from torchvision import transforms
 
 ds = load_dataset("logo-wizard/modern-logo-dataset")
-tokenizer = CLIPTokenizer.from_pretrained("openai/clip-vit-base-patch32") #On peut mettre d'autres modèles
+tokenizer = CLIPTokenizer.from_pretrained("openai/clip-vit-base-patch32")
 transform = transforms.Compose([
     transforms.Resize((256, 256)),
     transforms.ToTensor(),
@@ -15,18 +15,20 @@ transform = transforms.Compose([
 ])
 
 def preprocess(example):
-    example["input_ids"] = tokenizer(example["text"], truncation=True, padding="max_length").input_ids
+    example["input_ids"] = tokenizer(
+        example["text"], truncation=True, padding="max_length", max_length=77
+    ).input_ids
     example["pixel_values"] = torch.stack([transform(img) for img in example["image"]])
     return example
 
 ds = ds.map(preprocess, batched=True)
 dataloader = DataLoader(ds["train"], batch_size=1, shuffle=True)
 
-model = UNet2DConditionModel.from_pretrained("CompVis/stable-diffusion-v1-3")
+model = UNet2DConditionModel.from_pretrained("runwayml/stable-diffusion-v1-5")
 config = LoraConfig(
     r=4,
     lora_alpha=16,
-    target_modules=["attn1", "attn2"], #potentiellement à changer en fonction des layers target qu'on veut fine-tuner
+    target_modules=["attn1", "attn2"],
     lora_dropout=0.05,
     bias="none"
 )
