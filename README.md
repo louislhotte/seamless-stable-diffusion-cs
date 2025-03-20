@@ -2,6 +2,10 @@
 
 **Project 3A - Headmind Partners IA (Stable Diffusion)**
 
+<p align="center">
+  <img src="./Benchmark/lhotte.jpg" width="200">
+</p>
+
 ## Overview
 
 This project aims to explore and enhance the capabilities of Stable Diffusion, a deep learning, text-to-image model, by focusing on seamless image generation and blending techniques. Stable Diffusion is primarily used to generate detailed images based on text descriptions but can also be applied to tasks such as inpainting, outpainting, and image-to-image translations guided by text prompts.
